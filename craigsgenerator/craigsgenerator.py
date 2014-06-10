@@ -1,8 +1,14 @@
 import os
-import concurrent.futures as f
 import datetime
 from time import sleep
 import requests
+try:
+  import concurrent.futures as f
+except ImportError:
+  superthreaded = False 
+else:
+  superthreaded = True 
+
 try:
     from queue import Queue
 except ImportError:
@@ -19,7 +25,7 @@ from craigsgenerator.sections import sections as _sections
 def craigsgenerator(sites = None, sections = None, listings = _listings,
                     cachedir = 'craigslist', scheme = 'https',
                     get = requests.get,
-                    threads_per_section = 10, superthreaded = True):
+                    threads_per_section = 10, superthreaded = superthreaded):
     '''
     These parameters limit what pages will be downloaded; if you use the defaults, all pages will be downloaded.
         sites: An iterable of Craigslist sites to download (like "boston.craigslist.org")
